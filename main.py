@@ -4,6 +4,9 @@ from PyQt5.uic import loadUi
 import sys
 from translate import translate_
 import speech_recognition as sr
+import os
+import playsound
+from gtts import gTTS
 
 
 class TransWindow(QMainWindow):
@@ -11,8 +14,8 @@ class TransWindow(QMainWindow):
         super(TransWindow, self).__init__()
         loadUi('trans.ui', self)
         self.btn_micro.clicked.connect(self.command)
-        self.btn_trans.clicked.connect(self.function)
-        # self.btn_speak.clicked.connect(self.speak)
+        self.btn_trans.clicked.connect(self.trans)
+        self.btn_speak.clicked.connect(self.speak)
         self.show()
 
     @pyqtSlot()
@@ -24,12 +27,12 @@ class TransWindow(QMainWindow):
             r.pause_threshold = 1
             r.adjust_for_ambient_noise(source, 1)
             audio = r.listen(source)
-            speaking_lang = self.wich_language(
+            listening_lang = self.wich_language(
                 self.frombox.currentText(), False)
 
             try:
                 task = r.recognize_google(
-                    audio, language=speaking_lang).lower()
+                    audio, language=listening_lang).lower()
                 print(task)
             except sr.UnknownValueError:
                 print('I cannot understand you')
@@ -37,12 +40,22 @@ class TransWindow(QMainWindow):
             self.Edit.setText(task)
 
     @pyqtSlot()
-    def function(self):
+    def trans(self):
         from_language = self.wich_language(self.frombox.currentText())
         to_language = self.wich_language(self.tobox.currentText())
 
         self.result.setText(
             str(translate_(self.Edit.text(), from_language, to_language)))
+
+    @pyqtSlot()
+    def speak(self):
+        text = self.result.text()
+        sepaking_language = self.wich_language(self.tobox.currentText())
+
+        tts = gTTS(text=text, lang=sepaking_language)
+        filename = "voice.mp3"
+        tts.save(filename)
+        playsound.playsound(filename)
 
     def wich_language(self, language, is_for_trans=True):
         if language == 'English':

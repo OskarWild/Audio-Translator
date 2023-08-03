@@ -72,6 +72,16 @@
     </item>
     <item>
      <property name="text">
+      <string>Russian</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Italian</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
       <string>French</string>
      </property>
     </item>
@@ -159,7 +169,17 @@
     </property>
     <item>
      <property name="text">
+      <string>Russian</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
       <string>French</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Italian</string>
      </property>
     </item>
     <item>

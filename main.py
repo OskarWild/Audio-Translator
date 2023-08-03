@@ -73,6 +73,16 @@ class TransWindow(QMainWindow):
                 return 'el'
             else:
                 return 'el-GR'
+        elif language == 'Russian':
+            if is_for_trans:
+                return 'ru'
+            else:
+                return 'ru-RU'
+        elif language == 'Italian':
+            if is_for_trans:
+                return 'it'
+            else:
+                return 'it-IT'
 
 
 if __name__ == "__main__":

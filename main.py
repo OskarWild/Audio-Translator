@@ -12,6 +12,7 @@ class TransWindow(QMainWindow):
         loadUi('trans.ui', self)
         self.btn_micro.clicked.connect(self.command)
         self.btn_trans.clicked.connect(self.function)
+        # self.btn_speak.clicked.connect(self.speak)
         self.show()
 
     @pyqtSlot()
@@ -23,9 +24,12 @@ class TransWindow(QMainWindow):
             r.pause_threshold = 1
             r.adjust_for_ambient_noise(source, 1)
             audio = r.listen(source)
+            speaking_lang = self.wich_language(
+                self.frombox.currentText(), False)
 
             try:
-                task = r.recognize_google(audio, language='en-us').lower()
+                task = r.recognize_google(
+                    audio, language=speaking_lang).lower()
                 print(task)
             except sr.UnknownValueError:
                 print('I cannot understand you')
@@ -40,13 +44,22 @@ class TransWindow(QMainWindow):
         self.result.setText(
             str(translate_(self.Edit.text(), from_language, to_language)))
 
-    def wich_language(self, language):
+    def wich_language(self, language, is_for_trans=True):
         if language == 'English':
-            return 'en'
+            if is_for_trans:
+                return 'en'
+            else:
+                return 'en-US'
         elif language == 'French':
-            return 'fr'
+            if is_for_trans:
+                return 'fr'
+            else:
+                return 'fr-FR'
         elif language == 'Greek':
-            return 'el'
+            if is_for_trans:
+                return 'el'
+            else:
+                return 'el-GR'
 
 
 if __name__ == "__main__":
